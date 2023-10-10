@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
@@ -24,43 +25,44 @@ public class PlayerController : MonoBehaviour
         inputMaster = new InputMaster();
         characterController = GetComponent<CharacterController>();
     }
-    void Update()
+    private void OnEnable()
+    {
+        inputMaster.Enable();
+        inputMaster.Player.Move.performed += MoveChanged;
+        inputMaster.Player.Jump.performed += Jump;
+    }
+    private void MoveChanged(InputAction.CallbackContext obj)
+    {
+        move = obj.ReadValue<Vector2>();
+    }
+    private void Jump(InputAction.CallbackContext obj)
+    {
+        velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+    }
+    private void OnDisable()
+    {
+        inputMaster.Player.Move.performed -= MoveChanged;
+        inputMaster.Player.Jump.performed -= Jump;
+        inputMaster.Disable();
+    }
+    void FixedUpdate()
     {
         Gravity();
         PlayerMovement();
-        Jump();
     }
     private void PlayerMovement()
     {
-        move = inputMaster.Player.Movement.ReadValue<Vector2>();
         Vector3 movement = (move.y * transform.forward) + (move.x * transform.right);
-        characterController.Move(movement * moveSpeed * Time.deltaTime);
-    }
-    private void Jump()
-    {
-        if (inputMaster.Player.Jump.triggered)
-        {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-        }
+        characterController.Move(movement * (moveSpeed * Time.deltaTime));
     }
     private void Gravity()
     {
         isGrounded = Physics.CheckSphere(ground.position, distanceToGround, groundMask);
 
         if (isGrounded && velocity.y < 0)
-        {
             velocity.y = -2f;
-        }
 
         velocity.y += gravity * Time.deltaTime;
         characterController.Move(velocity * Time.deltaTime);
-    }
-    private void OnEnable()
-    {
-        inputMaster.Enable();
-    }
-    private void OnDisable()
-    {
-        inputMaster.Disable();
     }
 }

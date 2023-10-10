@@ -1,78 +1,63 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using Unity.VisualScripting;
+using System.Text;
+using HtmlAgilityPack;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class TimeTableFetcher : MonoBehaviour
 {
     [SerializeField] private int classId;
-    List<List<string>> table = new List<List<string>>();
-    string dupa;
-    private void Awake() {
-        dupa = new WebClient().DownloadString($"https://www.zsl.gda.pl/assets/plan-lekcji/plany/o{classId}.html");
-        string cut = "class=\"tabela\">";
-        int index = dupa.IndexOf(cut);
-        dupa = dupa.Remove(0, index + cut.Length);
-        cut = "</table>";
-        index = dupa.IndexOf(cut);
-        dupa = dupa.Remove(index, dupa.Length - index);
-        dupa = dupa.Replace("</tr>", "");
-        List<string> collumns = dupa.Split(new string[] { "<tr>" }, System.StringSplitOptions.RemoveEmptyEntries).ToList();
-        collumns.RemoveAt(0);
-        for (int i = 0; i < collumns.Count; i++)
+    private HtmlDocument htmlDoc;
+    [SerializeField] private TMPro.TMP_Dropdown classesDropdown;
+    private TimeTableCreator tableCreator;
+    private void Awake()
+    {
+        tableCreator = GetComponent<TimeTableCreator>();
+        htmlDoc = new HtmlDocument();
+        var html = RetriveHtml($"https://www.zsl.gda.pl/assets/plan-lekcji/lista.html");
+        htmlDoc.LoadHtml(html);
+        var classList = htmlDoc.DocumentNode.Descendants("a");
+        foreach (var VARIABLE in classList)
         {
-            List<string> rows = new();
-            if (collumns[i].Contains("<td"))
-                rows = collumns[i].Split(new string[] { "<td" }, System.StringSplitOptions.RemoveEmptyEntries).ToList();
-            else if (collumns[i].Contains("<th"))
-                rows = collumns[i].Split(new string[] { "<th" }, System.StringSplitOptions.RemoveEmptyEntries).ToList();
-
-            rows.RemoveAt(0);
-            int index1 = 0;
-            int index2 = 0;
-            for (int g = 0; g < rows.Count; g++)
+            try
             {
-                index1 = 0;
-                index2 = 0;
-                int first = rows[g].IndexOf('>');
-                rows[g] = rows[g].Remove(0, first + 1);
-                while (rows[g].Contains('<') || rows[g].Contains('>'))
-                {
-                    index1 = rows[g].IndexOf('<');
-                    index2 = rows[g].IndexOf('>');
-                    rows[g] = rows[g].Remove(index1, index2 - index1 + 1);
-                }
-            }
-            table.Add(rows);
+                if (VARIABLE.ParentNode.ParentNode.Attributes["class"].Value == "blk")
+                    AddClass(VARIABLE.InnerHtml);
+            }catch{}
         }
-
+    }
+    public void Reload()
+    {
+        var classSchedule = RetriveHtml($"https://www.zsl.gda.pl/assets/plan-lekcji/plany/o{classesDropdown.value+1}.html");
+        htmlDoc.LoadHtml(classSchedule);
+        var stringTable = htmlDoc.DocumentNode.Descendants("table").Where(x => x.GetAttributeValue("class", "") == "tabela").First();
+        List<List<string>> table = new();
+        foreach (var VARIABLE in stringTable.Descendants("tr"))
+        {
+            List<string> collumn = new();
+            foreach (var VARIABLE2 in VARIABLE.Descendants("td"))
+            {
+                collumn.Add(VARIABLE2.InnerText);
+            }
+            table.Add(collumn);
+        }
         for (int i = 0; i < table.Count; i++)
         {
             for (int j = 0; j < table[i].Count; j++)
             {
-                var text = new GameObject("Text", typeof(RectTransform), typeof(Text));
-                text.transform.SetParent(transform);
-                text.GetComponent<Text>().text = table[i][j];
-                text.GetComponent<Text>().font = Resources.GetBuiltinResource(typeof(Font), "LegacyRuntime.ttf") as Font;
-
-                var rect = text.GetComponent<RectTransform>();
-                rect.anchorMin = new Vector2(0, 1);
-                rect.anchorMax = new Vector2(0, 1);
-                rect.pivot = new Vector2(0, 1);
-                rect.anchoredPosition = new Vector2(j * 200, -i * 100);
-                rect.sizeDelta = new Vector2(200, 100);
-
-                text.GetComponent<Text>().alignment = TextAnchor.MiddleCenter;
-
-                text.GetComponent<Text>().color = Color.black;
-
-                text.GetComponent<Text>().fontSize = 24;
-                text.GetComponent<Text>().maskable = false;
-
+                tableCreator.SetColumn(i-1,  j,table[i][j]);
             }
         }
+    }
+    private void AddClass(string name)
+    {
+        var option = new TMPro.TMP_Dropdown.OptionData(name);
+        classesDropdown.options.Add(option);
+    }
+    private string RetriveHtml(string url)
+    {
+        var htmlData = new WebClient().DownloadData(url);
+        return Encoding.UTF8.GetString(htmlData);
     }
 }
