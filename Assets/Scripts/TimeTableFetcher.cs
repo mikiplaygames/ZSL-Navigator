@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -33,21 +34,28 @@ public class TimeTableFetcher : MonoBehaviour
         htmlDoc.LoadHtml(classSchedule);
         var stringTable = htmlDoc.DocumentNode.Descendants("table").Where(x => x.GetAttributeValue("class", "") == "tabela").First();
         List<List<string>> table = new();
-        foreach (var VARIABLE in stringTable.Descendants("tr"))
+        foreach (var columnName in stringTable.Descendants("th"))
         {
-            List<string> collumn = new();
-            foreach (var VARIABLE2 in VARIABLE.Descendants("td"))
-            {
-                collumn.Add(VARIABLE2.InnerText);
-            }
-            table.Add(collumn);
+            table.Add(new List<string>{columnName.InnerText});
         }
+        
+        foreach (var row in stringTable.Descendants("tr"))
+        {
+            int i = 0;
+            foreach (var column in row.Descendants("td"))
+            {
+                table[i].Add(column.InnerText);
+                i++;
+            }
+        }
+
         for (int i = 0; i < table.Count; i++)
         {
             for (int j = 0; j < table[i].Count; j++)
             {
-                tableCreator.SetColumn(i-1,  j,table[i][j]);
+                tableCreator.SetColumn(i,j, table[i][j]);
             }
+            tableCreator.DisableEmpty(table[i].Count);
         }
     }
     private void AddClass(string name)

@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 3761360302731307268}
   - component: {fileID: 7298869660003717634}
   - component: {fileID: 4428949735483556069}
-  - component: {fileID: 8261389598593824295}
+  - component: {fileID: 2286450723220104541}
   m_Layer: 0
-  m_Name: Row
+  m_Name: Collumn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tablet: {fileID: 6595546432350323757, guid: 98864ccb8d97b439e888507f6c52bead, type: 3}
---- !u!114 &8261389598593824295
+--- !u!114 &2286450723220104541
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6760000303900113478}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
@@ -107,8 +107,8 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 4
-  m_Spacing: 10
+  m_ChildAlignment: 0
+  m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0

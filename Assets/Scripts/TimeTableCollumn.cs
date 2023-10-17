@@ -9,12 +9,26 @@ public class TimeTableCollumn : MonoBehaviour
     
     public void SetRow(int horizontalIndex, string text)
     {
+        if (text.Equals("&nbsp"))
+            text = "";
+        
         if (horizontalIndex >= rows.Count)
-            AddRow(horizontalIndex, text);
+            AddRow(text);
         else
+        {
+            rows[horizontalIndex].transform.parent.gameObject.SetActive(true);
             rows[horizontalIndex].text = text;
+        }
     }
-    private void AddRow(int horizontalIndex, string text)
+    public void DisableEmpty(int count)
+    {
+        int howMany = rows.Count - count;
+        for (int i = 1; i <= howMany; i++)
+        {
+            rows[rows.Count-i].transform.parent.gameObject.SetActive(false);
+        }
+    }
+    private void AddRow(string text)
     {
         var row = Instantiate(tablet, transform).GetComponentInChildren<TMP_Text>();
         row.text = text;

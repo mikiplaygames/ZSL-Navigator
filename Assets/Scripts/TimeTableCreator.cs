@@ -13,7 +13,13 @@ public class TimeTableCreator : MonoBehaviour
         else
             rows[verticalIndex].SetRow(horizontalIndex, text);
     }
-
+    public void DisableEmpty(int count)
+    {
+        foreach (var VARIABLE in rows)
+        {
+            VARIABLE.DisableEmpty(count);
+        }
+    }
     private void AddColumn(int verticalIndex, string text)
     {
         var column = Instantiate(rowPrefab, container).GetComponent<TimeTableCollumn>();
