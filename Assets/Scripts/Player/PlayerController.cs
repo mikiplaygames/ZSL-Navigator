@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using MikiHeadDev.Core.Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,7 +11,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform ground;
     [SerializeField] private LayerMask groundMask;
     
-    private InputMaster inputMaster;
+    private Control control;
     private CharacterController characterController;
     
     private Vector3 velocity;
@@ -22,14 +23,14 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        inputMaster = new InputMaster();
+        control = new();
         characterController = GetComponent<CharacterController>();
     }
     private void OnEnable()
     {
-        inputMaster.Enable();
-        inputMaster.Player.Move.performed += MoveChanged;
-        inputMaster.Player.Jump.performed += Jump;
+        control.Enable();
+        control.Player.Move.performed += MoveChanged;
+        control.Player.Jump.performed += Jump;
     }
     private void MoveChanged(InputAction.CallbackContext obj)
     {
@@ -41,9 +42,9 @@ public class PlayerController : MonoBehaviour
     }
     private void OnDisable()
     {
-        inputMaster.Player.Move.performed -= MoveChanged;
-        inputMaster.Player.Jump.performed -= Jump;
-        inputMaster.Disable();
+        control.Player.Move.performed -= MoveChanged;
+        control.Player.Jump.performed -= Jump;
+        control.Disable();
     }
     void FixedUpdate()
     {
