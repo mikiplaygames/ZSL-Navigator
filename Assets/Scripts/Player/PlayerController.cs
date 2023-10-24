@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpHeight = 2.4f;
     [SerializeField] private Transform ground;
     [SerializeField] private LayerMask groundMask;
+    [SerializeField] private Camera cam;
     
     private Control control;
     private CharacterController characterController;
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour
     {
         control = new();
         characterController = GetComponent<CharacterController>();
+        cam = GetComponentInChildren<Camera>();
     }
     private void OnEnable()
     {
@@ -54,7 +56,7 @@ public class PlayerController : MonoBehaviour
     }
     private void PlayerMovement()
     {
-        Vector3 movement = (move.y * transform.forward) + (move.x * transform.right);
+        Vector3 movement = (move.y * cam.transform.forward) + (move.x * cam.transform.right);
         characterController.Move(movement * (moveSpeed * Time.deltaTime));
     }
     private void Gravity()
