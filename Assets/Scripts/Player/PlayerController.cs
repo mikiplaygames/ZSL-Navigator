@@ -37,7 +37,8 @@ public class PlayerController : MonoBehaviour
     }
     private void Jump(InputAction.CallbackContext obj)
     {
-        velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        if (isGrounded)
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
     }
     private void OnDisable()
     {
