@@ -16,7 +16,6 @@ public class PlayerController : MonoBehaviour
     
     private Control control;
     private CharacterController characterController;
-    private CinemachineCollisionImpulseSource impulse;
     
     private Vector3 velocity;
     private Vector2 move;
@@ -30,13 +29,22 @@ public class PlayerController : MonoBehaviour
         control = new();
         characterController = GetComponent<CharacterController>();
         cam = GetComponentInChildren<Camera>();
-        impulse = GetComponentInChildren<CinemachineCollisionImpulseSource>();
     }
     private void OnEnable()
     {
         control.Enable();
         control.Player.Move.performed += MoveChanged;
         control.Player.Jump.performed += Jump;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+    private void OnDisable()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        control.Player.Move.performed -= MoveChanged;
+        control.Player.Jump.performed -= Jump;
+        control.Disable();
     }
     private void MoveChanged(InputAction.CallbackContext obj)
     {
@@ -46,17 +54,10 @@ public class PlayerController : MonoBehaviour
     {
         if (isGrounded)
         {
-            impulse.GenerateImpulse();
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
     }
-    private void OnDisable()
-    {
-        control.Player.Move.performed -= MoveChanged;
-        control.Player.Jump.performed -= Jump;
-        control.Disable();
-    }
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         Gravity();
         PlayerMovement();
