@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using MikiHeadDev.Core.Input;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -14,6 +16,7 @@ public class PlayerController : MonoBehaviour
     
     private Control control;
     private CharacterController characterController;
+    private CinemachineCollisionImpulseSource impulse;
     
     private Vector3 velocity;
     private Vector2 move;
@@ -27,6 +30,7 @@ public class PlayerController : MonoBehaviour
         control = new();
         characterController = GetComponent<CharacterController>();
         cam = GetComponentInChildren<Camera>();
+        impulse = GetComponentInChildren<CinemachineCollisionImpulseSource>();
     }
     private void OnEnable()
     {
@@ -41,7 +45,10 @@ public class PlayerController : MonoBehaviour
     private void Jump(InputAction.CallbackContext obj)
     {
         if (isGrounded)
+        {
+            impulse.GenerateImpulse();
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
     }
     private void OnDisable()
     {
