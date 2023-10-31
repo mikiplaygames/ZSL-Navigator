@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
@@ -10,17 +11,20 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 6f;
     [SerializeField] private float jumpHeight = 2.4f;
+    [SerializeField] private int wobbleTreshold = 10;
     [SerializeField] private Transform ground;
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private Camera cam;
     
     private Control control;
     private CharacterController characterController;
+    private CinemachineImpulseSource impulse;
     
     private Vector3 velocity;
     private Vector2 move;
     private float gravity = -9.81f;
     private bool isGrounded;
+    private float lastY;
 
     public float distanceToGround = 0.4f;
 
@@ -29,6 +33,8 @@ public class PlayerController : MonoBehaviour
         control = new();
         characterController = GetComponent<CharacterController>();
         cam = GetComponentInChildren<Camera>();
+        impulse = GetComponent<CinemachineImpulseSource>();
+        lastY = 0;
     }
     private void OnEnable()
     {
@@ -70,6 +76,12 @@ public class PlayerController : MonoBehaviour
     private void Gravity()
     {
         isGrounded = Physics.CheckSphere(ground.position, distanceToGround, groundMask);
+        if (isGrounded && Mathf.Abs(lastY) - Mathf.Abs(transform.position.y) > wobbleTreshold)
+        {
+            // impact
+            impulse.GenerateImpulse();
+        }
+        lastY = transform.position.y;
 
         if (isGrounded && velocity.y < 0)
             velocity.y = -2f;

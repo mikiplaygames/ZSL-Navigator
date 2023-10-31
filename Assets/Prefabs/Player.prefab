@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 641643687629872545}
   - component: {fileID: 6056644500501009164}
   - component: {fileID: 1804139904606391306}
-  - component: {fileID: 6131959699343375621}
+  - component: {fileID: 6588071459650890480}
   m_Layer: 0
   m_Name: PlayerCamera
   m_TagString: MainCamera
@@ -277,9 +277,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerIndex: -1
   AutoEnableInputs: 1
-  XYAxis: {fileID: -5630151704836100654, guid: ca9f5fa95ffab41fb9a615ab714db018, type: 3}
+  XYAxis: {fileID: 9020258247130070627, guid: c99a362f7793028459ff0fc11ccfe20e, type: 3}
   ZAxis: {fileID: -7540009312954100553, guid: c99a362f7793028459ff0fc11ccfe20e, type: 3}
---- !u!114 &6131959699343375621
+--- !u!114 &6588071459650890480
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -288,19 +288,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 4372962017307684213}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c11265b855408d42af33d62691f5194, type: 3}
+  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_ApplyAfter: 2
   m_ChannelMask: 1
   m_Gain: 1
   m_Use2DDistance: 0
-  m_UseLocalSpace: 1
+  m_UseCameraSpace: 1
   m_ReactionSettings:
-    m_SecondaryNoise: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+    m_SecondaryNoise: {fileID: 0}
     m_AmplitudeGain: 1
     m_FrequencyGain: 1
     m_Duration: 1
-    m_NoiseOffsets: {x: 0, y: 0, z: 0}
+    m_NoiseOffsets: {x: 626.8336, y: -350.0785, z: 277.71017}
 --- !u!1 &6641851378315911706
 GameObject:
   m_ObjectHideFlags: 0
@@ -527,6 +528,7 @@ GameObject:
   - component: {fileID: 6705227918263822447}
   - component: {fileID: 6055818089690773358}
   - component: {fileID: 2293392445499928834}
+  - component: {fileID: 8335823760669710336}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -594,12 +596,66 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 6
   jumpHeight: 0.5
+  wobbleTreshold: 0
   ground: {fileID: 4933895703924188880}
   groundMask:
     serializedVersion: 2
     m_Bits: 64
   cam: {fileID: 0}
   distanceToGround: 0.4
+--- !u!114 &8335823760669710336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8153056936823365174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_ImpulseShape: 2
+    m_CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ImpulseDuration: 0.2
+    m_ImpulseType: 0
+    m_DissipationRate: 0.25
+    m_RawSignal: {fileID: 0}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 100
+    m_PropagationSpeed: 343
+  m_DefaultVelocity: {x: 0, y: 0.03, z: 0}
 --- !u!1 &8686421883599278758
 GameObject:
   m_ObjectHideFlags: 0
