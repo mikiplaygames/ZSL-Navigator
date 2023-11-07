@@ -70,7 +70,8 @@ public class PlayerController : MonoBehaviour
     }
     private void PlayerMovement()
     {
-        Vector3 movement = (move.y * cam.transform.forward) + (move.x * cam.transform.right);
+        Debug.Log(velocity.magnitude);   
+        Vector3 movement = (move.y * new Vector3(cam.transform.forward.x, 0, cam.transform.forward.z).normalized) + (move.x * cam.transform.right);
         characterController.Move(movement * (moveSpeed * Time.deltaTime));
     }
     private void Gravity()
