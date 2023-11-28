@@ -1,5 +1,5 @@
 {
-    "name": "InputMaster",
+    "name": "Control",
     "maps": [
         {
             "name": "Player",
@@ -36,6 +36,15 @@
                     "name": "Interact",
                     "type": "Button",
                     "id": "83d02a1e-d5c6-44ef-8acd-2c7aa9316133",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Run",
+                    "type": "Button",
+                    "id": "b0cbd600-0a31-4281-8d3b-a04d738bebd5",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -128,6 +137,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "239efe87-ff3c-4de6-8f22-d6a4a82580ba",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Run",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

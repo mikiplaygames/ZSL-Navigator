@@ -10,6 +10,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 6f;
+    [SerializeField] private float runSpeed = 9f;
     [SerializeField] private float jumpHeight = 2.4f;
     [SerializeField] private int wobbleTreshold = 10;
     [SerializeField] private float accelerationStep = 0.05f;
@@ -26,15 +27,19 @@ public class PlayerController : MonoBehaviour
     private Vector3 velocity;
     private Vector2 move;
     private Vector2 moveInput;
+    private float speed;
+    private float run;
     private float gravity = -9.81f;
     private bool isGrounded;
     private float acceleration = 0f;
+    private float moveNoise = 1f;
     private float lastY;
 
     public float distanceToGround = 0.4f;
 
     void Awake()
     {
+        speed = moveSpeed;
         control = new();
         characterController = GetComponent<CharacterController>();
         cam = GetComponentInChildren<Camera>();
@@ -47,6 +52,8 @@ public class PlayerController : MonoBehaviour
         control.Enable();
         control.Player.Move.performed += MoveChanged;
         control.Player.Jump.performed += Jump;
+        control.Player.Run.performed += RunStart;
+        control.Player.Run.canceled += RunStop;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -56,6 +63,8 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = true;
         control.Player.Move.performed -= MoveChanged;
         control.Player.Jump.performed -= Jump;
+        control.Player.Run.performed -= RunStart;
+        control.Player.Run.canceled -= RunStop;
         control.Disable();
     }
     private void MoveChanged(InputAction.CallbackContext obj)
@@ -69,6 +78,16 @@ public class PlayerController : MonoBehaviour
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
     }
+    private void RunStart(InputAction.CallbackContext obj)
+    {
+        speed = runSpeed;
+        moveNoise = 2f;
+    }
+    private void RunStop(InputAction.CallbackContext obj)
+    {
+        speed = moveSpeed;
+        moveNoise = 1f;
+    }
     private void FixedUpdate()
     {
         Gravity();
@@ -81,14 +100,14 @@ public class PlayerController : MonoBehaviour
         if (!moveInput.Equals(Vector3.zero))
         {
             acceleration = Mathf.Clamp(acceleration + accelerationStep, 0, 1f);
-            camNoise.m_AmplitudeGain = Mathf.Lerp(camNoise.m_AmplitudeGain, 1, 0.1f);
+            camNoise.m_AmplitudeGain = Mathf.Lerp(camNoise.m_AmplitudeGain, moveNoise, 0.1f);
         }
         else
         {
             acceleration = Mathf.Lerp(acceleration, 0, deccelerationStep);
             camNoise.m_AmplitudeGain = Mathf.Lerp(camNoise.m_AmplitudeGain, 0.1f, 0.1f);
         }
-        characterController.Move(movement * (moveSpeed * Time.deltaTime) * acceleration);
+        characterController.Move(movement * (speed * Time.deltaTime) * acceleration);
     }
     private void Gravity()
     {
