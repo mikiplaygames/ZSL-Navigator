@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 6056644500501009164}
   - component: {fileID: 1804139904606391306}
   - component: {fileID: 6588071459650890480}
+  - component: {fileID: 1163403950306712495}
   m_Layer: 0
   m_Name: PlayerCamera
   m_TagString: MainCamera
@@ -303,6 +304,18 @@ MonoBehaviour:
     m_FrequencyGain: 1
     m_Duration: 1
     m_NoiseOffsets: {x: 626.8336, y: -350.0785, z: 277.71017}
+--- !u!114 &1163403950306712495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4372962017307684213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2dcd7fa01a034548a7aae6dc60ef691, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6641851378315911706
 GameObject:
   m_ObjectHideFlags: 0
@@ -596,6 +609,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 6
+  runSpeed: 9
   jumpHeight: 0.5
   wobbleTreshold: -1086
   accelerationStep: 0.05
@@ -897,7 +911,7 @@ Cloth:
   m_RandomAcceleration: {x: 0, y: 0, z: 0}
   m_WorldVelocityScale: 0.5
   m_WorldAccelerationScale: 1
-  m_Friction: 0.5
+  m_Friction: 1
   m_CollisionMassScale: 1
   m_UseContinuousCollision: 1
   m_UseVirtualParticles: 1
@@ -7190,8 +7204,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 540624590692190219, guid: c5a38d26e70884332a0e5d78f72ca35a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 220783353604584589}
   m_SourcePrefab: {fileID: 100100000, guid: c5a38d26e70884332a0e5d78f72ca35a, type: 3}
+--- !u!1 &3124870889772393408 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 540624590692190219, guid: c5a38d26e70884332a0e5d78f72ca35a, type: 3}
+  m_PrefabInstance: {fileID: 3232857445841447883}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &220783353604584589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3124870889772393408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0da669051da513b4396f2698e2283af0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &3153186261296242739 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 513186629250141176, guid: c5a38d26e70884332a0e5d78f72ca35a, type: 3}
@@ -7202,7 +7236,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5324072330916141887, guid: c5a38d26e70884332a0e5d78f72ca35a, type: 3}
   m_PrefabInstance: {fileID: 3232857445841447883}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 3124870889772393408}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff4da1dcee24643ebbc92ee4b05e18b1, type: 3}

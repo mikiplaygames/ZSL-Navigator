@@ -73,6 +73,15 @@ namespace MikiHeadDev.Core.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Mouse"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""67fd64d3-eccf-42a1-a2dc-d967fa62051b"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -174,6 +183,17 @@ namespace MikiHeadDev.Core.Input
                     ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e9eb6d66-e867-4bca-bf55-ac8a727a5ec7"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mouse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -187,6 +207,7 @@ namespace MikiHeadDev.Core.Input
             m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
             m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
             m_Player_Run = m_Player.FindAction("Run", throwIfNotFound: true);
+            m_Player_Mouse = m_Player.FindAction("Mouse", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -253,6 +274,7 @@ namespace MikiHeadDev.Core.Input
         private readonly InputAction m_Player_Jump;
         private readonly InputAction m_Player_Interact;
         private readonly InputAction m_Player_Run;
+        private readonly InputAction m_Player_Mouse;
         public struct PlayerActions
         {
             private @Control m_Wrapper;
@@ -262,6 +284,7 @@ namespace MikiHeadDev.Core.Input
             public InputAction @Jump => m_Wrapper.m_Player_Jump;
             public InputAction @Interact => m_Wrapper.m_Player_Interact;
             public InputAction @Run => m_Wrapper.m_Player_Run;
+            public InputAction @Mouse => m_Wrapper.m_Player_Mouse;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -286,6 +309,9 @@ namespace MikiHeadDev.Core.Input
                 @Run.started += instance.OnRun;
                 @Run.performed += instance.OnRun;
                 @Run.canceled += instance.OnRun;
+                @Mouse.started += instance.OnMouse;
+                @Mouse.performed += instance.OnMouse;
+                @Mouse.canceled += instance.OnMouse;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -305,6 +331,9 @@ namespace MikiHeadDev.Core.Input
                 @Run.started -= instance.OnRun;
                 @Run.performed -= instance.OnRun;
                 @Run.canceled -= instance.OnRun;
+                @Mouse.started -= instance.OnMouse;
+                @Mouse.performed -= instance.OnMouse;
+                @Mouse.canceled -= instance.OnMouse;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -329,6 +358,7 @@ namespace MikiHeadDev.Core.Input
             void OnJump(InputAction.CallbackContext context);
             void OnInteract(InputAction.CallbackContext context);
             void OnRun(InputAction.CallbackContext context);
+            void OnMouse(InputAction.CallbackContext context);
         }
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class GameSettings : MonoBehaviour
 {
-    public static Vector2 MouseSensitivity { get; private set; }
+    public static Vector2 MouseSensitivity;
     public static UnityEvent OnMouseSensitivityChanged = new();
     private void OnEnable()
     {
@@ -15,8 +15,8 @@ public class GameSettings : MonoBehaviour
     }
     private void OnDisable()
     {
-        PlayerPrefs.SetFloat("MouseSensitivityX", MouseSensitivity.x);
-        PlayerPrefs.SetFloat("MouseSensitivityY", MouseSensitivity.y);
+        PlayerPrefs.SetFloat("MouseSensitivityX", MouseSensitivity.x / 100f);
+        PlayerPrefs.SetFloat("MouseSensitivityY", MouseSensitivity.y / 100f);
         PlayerPrefs.Save();
     }
     public void ChangeX(float value)

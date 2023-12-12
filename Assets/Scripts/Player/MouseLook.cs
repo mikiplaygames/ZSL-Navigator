@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class MouseLook : MonoBehaviour
 {
-    [SerializeField] private float mouseSensitivity = 100f;
     [SerializeField] private Transform playerBody;
 
     private Vector2 mouseLook;
@@ -37,6 +36,8 @@ public class MouseLook : MonoBehaviour
     private void OnEnable()
     {
         control.Enable();
+        Debug.Log(GameSettings.MouseSensitivity);
+
     }
     private void OnDisable()
     {

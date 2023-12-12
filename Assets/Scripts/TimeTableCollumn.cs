@@ -9,9 +9,11 @@ public class TimeTableCollumn : MonoBehaviour
     
     public void SetRow(int horizontalIndex, string text)
     {
-        if (text.Equals("&nbsp"))
-            text = "";
-        
+        int index = text.IndexOf("&");
+        text = (index < 0)
+            ? text
+            : text.Remove(index, 6);
+
         if (horizontalIndex >= rows.Count)
             AddRow(text);
         else
