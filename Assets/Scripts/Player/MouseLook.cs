@@ -25,8 +25,8 @@ public class MouseLook : MonoBehaviour
     {
         mouseLook = control.Player.Look.ReadValue<Vector2>();
 
-        float mouseX = mouseLook.x * mouseSensitivity * Time.deltaTime;
-        float mouseY = mouseLook.y * mouseSensitivity * Time.deltaTime;
+        float mouseX = mouseLook.x * GameSettings.MouseSensitivity.x * Time.deltaTime;
+        float mouseY = mouseLook.y * GameSettings.MouseSensitivity.y * Time.deltaTime;
 
         rotationX -= mouseY;
         rotationX = Mathf.Clamp(rotationX, -90f, 90);
