@@ -6,6 +6,15 @@ using UnityEngine.Events;
 
 public class GameSettings : MonoBehaviour
 {
+    private static bool narrator;
+    public static bool Narrator {
+        set { 
+            narrator = value;
+            OnNarratorChanged?.Invoke();
+        }
+        get { return narrator; }
+    }
+    public static UnityEvent OnNarratorChanged = new();
     public static Vector2 MouseSensitivity;
     public static UnityEvent OnMouseSensitivityChanged = new();
     private void OnEnable()

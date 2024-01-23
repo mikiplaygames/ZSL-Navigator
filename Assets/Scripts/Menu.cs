@@ -5,17 +5,24 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using MikiHeadDev.Core.Input;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class Menu : MonoBehaviour
 {
     private Image image;
     private Vector2 mousePos;
     private Control control;
+    TextToSpeech speech;
+    private GameObject[] speakable;
 
     private void Awake()
     {
         control = new();
         image = GetComponentInChildren<Image>();
+        speech = new TextToSpeech();
+        speakable = GameObject.FindGameObjectsWithTag("Speakable");
+        speech.SpeakItems(speakable);
+
     }
     private void OnEnable()
     {
