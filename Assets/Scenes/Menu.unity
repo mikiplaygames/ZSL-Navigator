@@ -778,6 +778,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 952263e59b260914fa50ca6a5ea55bc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  narratorToggle: {fileID: 0}
 --- !u!114 &600717261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2079,7 +2080,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 600717260}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
+        m_MethodName: OnNarratorToggle
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

@@ -14,6 +14,7 @@ public class Menu : MonoBehaviour
     private Control control;
     TextToSpeech speech;
     private GameObject[] speakable;
+    [SerializeField] private Toggle narratorToggle;
 
     private void Awake()
     {
@@ -21,7 +22,11 @@ public class Menu : MonoBehaviour
         image = GetComponentInChildren<Image>();
         speech = new TextToSpeech();
         speakable = GameObject.FindGameObjectsWithTag("Speakable");
-        speech.SpeakItems(speakable);
+        if (GameSettings.Narrator)
+        {
+            narratorToggle.isOn = true;
+            speech.SpeakItems(speakable);
+        }
 
     }
     private void OnEnable()
@@ -45,5 +50,11 @@ public class Menu : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+    public void OnNarratorToggle(bool value)
+    {
+        GameSettings.Narrator = value;
+        if (value)
+            speech.SpeakItems(speakable);
     }
 }

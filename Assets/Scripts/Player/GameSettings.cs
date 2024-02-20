@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public class GameSettings : MonoBehaviour
 {
-    private static bool narrator;
+    private static bool narrator = false;
     public static bool Narrator {
         set { 
             narrator = value;
