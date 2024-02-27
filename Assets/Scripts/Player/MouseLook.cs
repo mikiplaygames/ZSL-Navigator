@@ -36,8 +36,6 @@ public class MouseLook : MonoBehaviour
     private void OnEnable()
     {
         control.Enable();
-        Debug.Log(GameSettings.MouseSensitivity);
-
     }
     private void OnDisable()
     {
