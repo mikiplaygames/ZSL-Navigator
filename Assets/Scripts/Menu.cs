@@ -12,22 +12,17 @@ public class Menu : MonoBehaviour
     private Image image;
     private Vector2 mousePos;
     private Control control;
-    TextToSpeech speech;
-    private GameObject[] speakable;
+    private Speaker speaker;
     [SerializeField] private Toggle narratorToggle;
+    [SerializeField] private Slider sensitivitySlider;
 
     private void Awake()
     {
         control = new();
+        speaker = new Speaker();
         image = GetComponentInChildren<Image>();
-        speech = new TextToSpeech();
-        speakable = GameObject.FindGameObjectsWithTag("Speakable");
-        if (GameSettings.Narrator)
-        {
-            narratorToggle.isOn = true;
-            speech.SpeakItems(speakable);
-        }
-
+        sensitivitySlider.onValueChanged.AddListener(SetSensitivity);
+        speaker.Speak();
     }
     private void OnEnable()
     {
@@ -41,7 +36,7 @@ public class Menu : MonoBehaviour
     {
         mousePos = control.Player.Mouse.ReadValue<Vector2>();
         image.transform.position = -mousePos * 0.1f;
-        image.transform.position += new Vector3(Screen.width/2f,Screen.height/2f,0f);
+        image.transform.position += new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
     }
     public void StartGame()
     {
@@ -53,8 +48,12 @@ public class Menu : MonoBehaviour
     }
     public void OnNarratorToggle(bool value)
     {
-        GameSettings.Narrator = value;
+        GameSettings.Instance.Narrator = value;
         if (value)
-            speech.SpeakItems(speakable);
+            speaker.Speak();
+    }
+    public void SetSensitivity(float value)
+    {
+        GameSettings.Instance.SetSensitivity(value);
     }
 }

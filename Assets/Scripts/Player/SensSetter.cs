@@ -6,15 +6,16 @@ using UnityEngine;
 public class SensSetter : MonoBehaviour
 {
     CinemachineVirtualCamera vc;
-    void Start() 
+    void Awake() 
     {
         vc = GetComponent<CinemachineVirtualCamera>();
-        //vc.
+        GameSettings.Instance.OnMouseSensitivityChanged.AddListener(SetSens);
     }
-
-    // Update is called once per frame
-    void Update()
+    public void SetSens()
     {
-        
+        var sensX = GameSettings.Instance.MouseSensitivity.x;
+        var sensY = GameSettings.Instance.MouseSensitivity.y;
+        vc.GetCinemachineComponent<CinemachinePOV>().m_HorizontalAxis.m_MaxSpeed = sensX;
+        vc.GetCinemachineComponent<CinemachinePOV>().m_VerticalAxis.m_MaxSpeed = sensY;
     }
 }

@@ -5,17 +5,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
-    [SerializeField] private GameObject panel;
     [SerializeField] private CinemachineInputProvider cameraInput;
+    [SerializeField] private GameObject panel;
+    [SerializeField] private Toggle narratorToggle;
+    [SerializeField] private Slider sensitivitySlider;
     private Control control;
+    private Speaker speaker;
     public static bool toggled = false;
 
     private void Awake()
     {
         control = new();
+        speaker = new Speaker();
+        speaker.Speak();
+        sensitivitySlider.onValueChanged.AddListener(SetSensitivity);
+        if (GameSettings.Instance.Narrator)
+            narratorToggle.isOn = true;
     }
     private void OnEnable()
     {
@@ -46,5 +55,15 @@ public class PauseMenu : MonoBehaviour
     public void ExitToMainMenu()
     {
         SceneManager.LoadScene("Menu", LoadSceneMode.Single);
+    }
+    public void SetSensitivity(float value)
+    {
+        GameSettings.Instance.SetSensitivity(value);
+    }
+    public void OnNarratorToggle(bool value)
+    {
+        GameSettings.Instance.Narrator = value;
+        if (value)
+            speaker.Speak();
     }
 }
