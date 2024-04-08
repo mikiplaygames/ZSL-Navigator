@@ -36,9 +36,14 @@ public class PlayerController : MonoBehaviour
     private float lastY;
 
     public float distanceToGround = 0.4f;
+    public static PlayerController Instance { get; private set; }
 
     void Awake()
     {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
         speed = moveSpeed;
         control = new();
         characterController = GetComponent<CharacterController>();

@@ -5,7 +5,7 @@ using System.Text;
 using HtmlAgilityPack;
 using UnityEngine;
 
-public class TimeTableFetcher : MonoBehaviour
+public class TimeTableFetcher : Singleton<TimeTableFetcher>
 {
     private HtmlDocument htmlDoc;
     private TimeTableCreator tableCreator;
