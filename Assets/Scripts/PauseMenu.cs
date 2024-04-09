@@ -13,6 +13,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private GameObject panel;
     [SerializeField] private Toggle narratorToggle;
     [SerializeField] private Slider sensitivitySlider;
+    [SerializeField] private Button focusButton;
     private Control control;
     private Speaker speaker;
     public static bool toggled = false;
@@ -46,6 +47,7 @@ public class PauseMenu : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             panel.transform.position = new Vector3(0, panel.transform.position.y, 0);
             LeanTween.moveX(panel, 113f, 0.5f).setEase(LeanTweenType.easeOutElastic);
+            focusButton.Select();
         }
         else
         {

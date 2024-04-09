@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
+public abstract class Singleton<T> : MonoBehaviour where T : Component
 {
     static T _instance;
     public static T Instance
@@ -11,8 +11,8 @@ public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
         {
             if (_instance == null)
             {
-                _instance = (T)FindObjectOfType(typeof(T));
-                Debug.LogError("An instance of " + typeof(T) + " is needed in the scene, but there is none.");
+                var s = new GameObject();
+                _instance = s.AddComponent<T>();
             }
             return _instance;
         }
