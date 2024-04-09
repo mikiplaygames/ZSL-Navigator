@@ -23,6 +23,7 @@ public class Interaction : MonoBehaviour
     {
         if (!Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 105, interactLayer)) return;
         var interactable = hit.transform.GetComponentInChildren<IInteractable>(true);
-        interactable.Interact();
+        if (interactable != null)
+            interactable.Interact();
     }
 }
