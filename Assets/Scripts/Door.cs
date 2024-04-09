@@ -14,7 +14,9 @@ public class Door : MonoBehaviour , IInteractable
         set
         {
             _finalAngle = value;
-            StartCoroutine(RotateDoor());
+            //StartCoroutine(RotateDoor());
+            LeanTween.rotateY(doorPivot.gameObject, _finalAngle, 1.5f).setEase(LeanTweenType.easeOutElastic);
+            Debug.Log(_finalAngle);
         }
     }
     private void Awake()
@@ -23,10 +25,12 @@ public class Door : MonoBehaviour , IInteractable
     }
     public void Interact()
     {
-        if (finalAngle != 0)
-            finalAngle = 0;
+        if (finalAngle != 180)
+            finalAngle = 180;
         else
-            finalAngle = 90 * Mathf.CeilToInt(Mathf.Clamp(PlayerController.Instance.transform.position.z - transform.position.z, -1, 1));
+            finalAngle = 90 * Mathf.CeilToInt(
+                Mathf.Clamp(PlayerController.Instance.transform.position.z - transform.position.z, -1, 1)
+            );
     }
     private IEnumerator RotateDoor()
     {
