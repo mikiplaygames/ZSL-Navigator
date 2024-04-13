@@ -6,39 +6,50 @@ using UnityEngine;
 public class Door : MonoBehaviour , IInteractable
 {
     [SerializeField] private Transform doorPivot;
-    private int _finalAngle = 0;
-    private float startingAngle;
-    private int finalAngle
-    {
-        get => _finalAngle;
-        set
-        {
-            _finalAngle = value;
-            StartCoroutine(RotateDoor());
-        }
-    }
+    Vector3 openRotation = new(0, 90, 0);
+    Vector3  closeRotation;
+    private bool isOpen = false;
     private void Awake()
     {
-        startingAngle = doorPivot.rotation.eulerAngles.y;
+        closeRotation = doorPivot.localEulerAngles;
     }
+
     public void Interact()
     {
-        if (finalAngle != 0)
-            finalAngle = 0;
-        else
-            finalAngle = 90 * Mathf.CeilToInt(Mathf.Clamp(PlayerController.Instance.transform.position.z - transform.position.z, -1, 1));
+        if (LeanTween.isTweening()) return;
+        ToggleDoor();
     }
-    private IEnumerator RotateDoor()
+    private void ToggleDoor()
     {
-        var enumeratorStartWithAngle = finalAngle;
-        var startAngle = doorPivot.rotation.eulerAngles.y;
-        var endAngle = startingAngle + finalAngle;
-        var t = 0f;
-        while (t < 1 && enumeratorStartWithAngle == finalAngle)
-        {
-            t += Time.deltaTime;
-            doorPivot.rotation = Quaternion.Euler(0, Mathf.Lerp(startAngle, endAngle, t), 0);
-            yield return null;
-        }
+        if (isOpen)
+            CloseDoor();
+        else
+            OpenDoor();
+        isOpen = !isOpen;
+    }
+
+    private void OpenDoor()
+    {
+        if (isOpen) return;
+        // Calculate the direction vector from the door to the player
+        Vector3 playerDirection = (PlayerController.Instance.transform.position - transform.position).normalized;
+
+        // Calculate the dot product to determine if the player is in front or behind the door
+        float dotProduct = Vector3.Dot(transform.forward, playerDirection);
+
+        // Determine the open rotation based on whether the player is in front or behind the door
+        Vector3 targetRotation = dotProduct >= 0 ? openRotation : -openRotation;
+
+        // Rotate the door to the open position
+        LeanTween.rotateLocal(doorPivot.gameObject, targetRotation, 1f)
+            .setEase(LeanTweenType.easeOutElastic);
+    }
+
+    private void CloseDoor()
+    {
+        if (!isOpen) return;
+        // Rotate the door back to the closed position
+        LeanTween.rotateLocal(doorPivot.gameObject, closeRotation, 1f)
+            .setEase(LeanTweenType.easeOutElastic);
     }
 }
