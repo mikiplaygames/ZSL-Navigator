@@ -43,7 +43,8 @@ public class PauseMenu : MonoBehaviour
     {
         cameraInput.enabled = toggled;
         toggled = !toggled;
-        playerController.enabled = !toggled;
+        if (!PlayerGuide.Instance.isNavigating)
+            playerController.enabled = !toggled;
         panel.SetActive(toggled);
         if (toggled)
         {
