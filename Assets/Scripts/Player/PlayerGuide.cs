@@ -24,10 +24,8 @@ public class PlayerGuide : MonoBehaviour
     private void DisplayLines()
     {
         var path = agent.path.corners;
-        for (int i = 0; i < path.Length; i++)
-        {
-            lineRenderer.SetPosition(i, path[i]);
-        }
+        lineRenderer.positionCount = path.Length;
+        lineRenderer.SetPositions(path);
     }
     public void Guide()
     {
@@ -43,7 +41,7 @@ public class PlayerGuide : MonoBehaviour
         playerController.enabled = true;
         agent.SetDestination(destination);
         agent.isStopped = true;
-        DisplayLines();
+        StartCoroutine(RefreshPath());
         StartCoroutine(WaitForArrival(0.5f));
     }
     private IEnumerator WaitForArrival(float distance = 0.02f)
@@ -53,5 +51,14 @@ public class PlayerGuide : MonoBehaviour
             yield return null;
         }
         playerController.enabled = true;
+        agent.isStopped = true;
+    }
+    private IEnumerator RefreshPath()
+    {
+        while (!agent.isStopped && agent.hasPath)
+        {
+            DisplayLines();
+            yield return null;
+        }
     }
 }
