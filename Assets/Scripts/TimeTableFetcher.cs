@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using TMPro;
 using UnityEngine;
 
 public class TimeTableFetcher : MonoBehaviour
@@ -24,7 +25,27 @@ public class TimeTableFetcher : MonoBehaviour
             Destroy(gameObject);
         tableCreator = GetComponent<TimeTableCreator>();
         htmlDoc = new HtmlDocument();
-        //RetriveClasses();
+        RetriveClasses();
+        classesDropdown.onValueChanged.AddListener((v) => FillUpLessonsDropdown(v+1));
+    }
+    private async void FillUpLessonsDropdown(int classId)
+    {
+        await LoadLessons(classId);
+        lessonDropdown.ClearOptions();
+        var lessons = new List<string>();
+        for (int i = 2; i < table.Count; i++)
+        {
+            foreach (var VARIABLE in table[i])
+            {
+                lessons.Add(VARIABLE);
+            }
+        }
+        lessons = lessons.Distinct().ToList();
+        foreach (var VARIABLE in lessons)
+        {
+            var option = new TMPro.TMP_Dropdown.OptionData(VARIABLE);
+            lessonDropdown.options.Add(option);
+        }
     }
     private async void RetriveClasses()
     {
@@ -40,8 +61,9 @@ public class TimeTableFetcher : MonoBehaviour
             }catch{}
         }
     }
-    public async void Reload(int classId)
+    private async Task LoadLessons(int classId)
     {
+        if (classId == 0) return;
         var classSchedule = await RetriveHtml($"https://www.zsl.gda.pl/assets/plan-lekcji/plany/o{classId}.html");
         htmlDoc.LoadHtml(classSchedule);
         var stringTable = htmlDoc.DocumentNode.Descendants("table").First(x => x.GetAttributeValue("class", "") == "tabela");
@@ -59,6 +81,10 @@ public class TimeTableFetcher : MonoBehaviour
                 i++;
             }
         }
+    }
+    public async void DisplayTimeTable(int classId)
+    {
+        await LoadLessons(classId);
         for (int i = 0; i < table.Count; i++)
         {
             for (int j = 0; j < table[i].Count; j++)

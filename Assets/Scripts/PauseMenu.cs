@@ -15,19 +15,19 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private Slider sensitivitySlider;
     [SerializeField] private Button focusButton;
     private Control control;
-    private Speaker speaker;
+    // private Speaker speaker;
     public static bool toggled = false;
 
     private void Awake()
     {
         control = new();
-        speaker = new Speaker();
-        speaker.Speak();
+        // speaker = new Speaker();
+        // speaker.Speak();
         sensitivitySlider.onValueChanged.AddListener(SetSensitivity);
     }
     private void OnEnable()
     {
-        narratorToggle.isOn = GameSettings.Instance.Narrator;
+        // narratorToggle.isOn = GameSettings.Instance.Narrator;
         control.Enable();
         control.UI.Pause.performed += Toggle;
     }
@@ -64,7 +64,7 @@ public class PauseMenu : MonoBehaviour
     public void OnNarratorToggle(bool value)
     {
         GameSettings.Instance.Narrator = value;
-        if (value)
-            speaker.Speak();
+        // if (value)
+        //     speaker.Speak();
     }
 }
