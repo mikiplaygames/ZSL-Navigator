@@ -16,5 +16,5 @@ public class Navigator : MonoBehaviour
     {
         rooms.Add(id, position);
     }
-    public Vector3 GetSelectedDestination(string id) => rooms[id];
+    public Vector3 GetSelectedDestination(string id) => rooms.TryGetValue(id, out var dest) ? dest : Vector3.zero;
 }
