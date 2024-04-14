@@ -13,9 +13,8 @@ public class SensSetter : MonoBehaviour
     }
     public void SetSens()
     {
-        var sensX = GameSettings.Instance.MouseSensitivity.x;
-        var sensY = GameSettings.Instance.MouseSensitivity.y;
-        vc.GetCinemachineComponent<CinemachinePOV>().m_HorizontalAxis.m_MaxSpeed = sensX;
-        vc.GetCinemachineComponent<CinemachinePOV>().m_VerticalAxis.m_MaxSpeed = sensY;
+        var sens = GameSettings.Instance.mouseSensitivity;
+        vc.GetCinemachineComponent<CinemachinePOV>().m_HorizontalAxis.m_MaxSpeed = sens;
+        vc.GetCinemachineComponent<CinemachinePOV>().m_VerticalAxis.m_MaxSpeed = sens;
     }
 }

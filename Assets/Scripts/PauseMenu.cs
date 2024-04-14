@@ -2,6 +2,7 @@ using Cinemachine;
 using MikiHeadDev.Core.Input;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -25,6 +26,7 @@ public class PauseMenu : MonoBehaviour
         // speaker = new Speaker();
         // speaker.Speak();
         sensitivitySlider.onValueChanged.AddListener(SetSensitivity);
+        sensitivitySlider.value = GameSettings.Instance.mouseSensitivity;
     }
     private void OnEnable()
     {
@@ -41,8 +43,8 @@ public class PauseMenu : MonoBehaviour
     {
         cameraInput.enabled = toggled;
         toggled = !toggled;
-        panel.SetActive(toggled);
         playerController.enabled = !toggled;
+        panel.SetActive(toggled);
         if (toggled)
         {
             Cursor.lockState = CursorLockMode.None;
@@ -57,11 +59,12 @@ public class PauseMenu : MonoBehaviour
     }
     public void ExitToMainMenu()
     {
-        SceneManager.LoadScene("Menu", LoadSceneMode.Single);
+        toggled = !toggled;
+        SceneManager.LoadScene("MAIN MENU", LoadSceneMode.Single);
     }
     public void SetSensitivity(float value)
     {
-        GameSettings.Instance.SetSensitivity(value);
+        GameSettings.Instance.mouseSensitivity = value;
     }
     public void OnNarratorToggle(bool value)
     {

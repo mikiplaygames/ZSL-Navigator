@@ -12,23 +12,27 @@ public class GameSettings : Singleton<GameSettings>
         get => narrator;
     }
     public UnityEvent OnNarratorChanged = new();
-    public Vector2 MouseSensitivity;
+
+    public float _mouseSensitivity;
+    public float mouseSensitivity
+    {
+        set
+        {
+            _mouseSensitivity = value;
+            OnMouseSensitivityChanged?.Invoke();
+        }
+        get => _mouseSensitivity;
+    }
     public UnityEvent OnMouseSensitivityChanged = new();
     private void OnEnable()
     {
-        MouseSensitivity = new Vector2(PlayerPrefs.GetFloat("MouseSensitivityX", 100f), PlayerPrefs.GetFloat("MouseSensitivityY", 100f));
+        mouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivityX", 0.55f);
         OnMouseSensitivityChanged?.Invoke();
     }
     private void OnDisable()
     {
-        PlayerPrefs.SetFloat("MouseSensitivityX", MouseSensitivity.x / 100f);
-        PlayerPrefs.SetFloat("MouseSensitivityY", MouseSensitivity.y / 100f);
+        PlayerPrefs.SetFloat("MouseSensitivityX", mouseSensitivity);
+        PlayerPrefs.SetFloat("MouseSensitivityY", mouseSensitivity);
         PlayerPrefs.Save();
-    }
-    public void SetSensitivity(float value)
-    {
-        MouseSensitivity.x = value;
-        MouseSensitivity.y = value;
-        OnMouseSensitivityChanged?.Invoke();
     }
 }

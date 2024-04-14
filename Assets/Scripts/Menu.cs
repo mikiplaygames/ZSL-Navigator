@@ -20,8 +20,9 @@ public class Menu : MonoBehaviour
     {
         control = new();
         speaker = new Speaker();
-        image = GetComponentInChildren<Image>();
+        //image = GetComponentInChildren<Image>();
         sensitivitySlider.onValueChanged.AddListener(SetSensitivity);
+        sensitivitySlider.value = GameSettings.Instance.mouseSensitivity;
         speaker.Speak();
     }
     private void OnEnable()
@@ -32,12 +33,12 @@ public class Menu : MonoBehaviour
     {
         control.Disable();
     }
-    private void Update()
+    /*private void Update()
     {
         mousePos = control.Player.Mouse.ReadValue<Vector2>();
         image.transform.position = -mousePos * 0.1f;
         image.transform.position += new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
-    }
+    }*/
     public void StartGame()
     {
         SceneManager.LoadScene("MainScene", LoadSceneMode.Single);
@@ -54,6 +55,6 @@ public class Menu : MonoBehaviour
     }
     public void SetSensitivity(float value)
     {
-        GameSettings.Instance.SetSensitivity(value);
+        GameSettings.Instance.mouseSensitivity = value;
     }
 }
