@@ -1,45 +1,57 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class PlayerGuide : MonoBehaviour
 {
     public static PlayerGuide Instance { get; private set; }
+    
+    [SerializeField] private LineRenderer lineRenderer;
 
     private NavMeshAgent agent;
-    [SerializeField] private Transform dest;
+    private PlayerController playerController;
+    
+    private Vector3 destination => Navigator.Instance.GetSelectedDestination(TimeTableFetcher.Instance.SelectedLesson);
+    
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        playerController = GetComponent<PlayerController>();
         if (Instance == null)
             Instance = this;
     }
-    public void SetDestination(Vector3 destination)
+    private void DisplayLines()
     {
+        var path = agent.path.corners;
+        for (int i = 0; i < path.Length; i++)
+        {
+            lineRenderer.SetPosition(i, path[i]);
+        }
+    }
+    public void Guide()
+    {
+        if (destination == Vector3.zero) return;
+        playerController.enabled = false;
         agent.SetDestination(destination);
-    }
-    public void Stop()
-    {
-        agent.isStopped = true;
-    }
-    public void Resume()
-    {
         agent.isStopped = false;
+        StartCoroutine(WaitForArrival());
     }
-
-    private void OnGUI()
+    public void Navigate()
     {
-        if (GUI.Button(new Rect(10, 10, 100, 50), "Stop"))
+        if (destination == Vector3.zero) return;
+        playerController.enabled = true;
+        agent.SetDestination(destination);
+        agent.isStopped = true;
+        DisplayLines();
+        StartCoroutine(WaitForArrival(0.5f));
+    }
+    private IEnumerator WaitForArrival(float distance = 0.02f)
+    {
+        while (agent.remainingDistance > distance)
         {
-            Stop();
+            yield return null;
         }
-        if (GUI.Button(new Rect(10, 70, 100, 50), "Resume"))
-        {
-            Resume();
-        }
-        if (GUI.Button(new Rect(10, 130, 100, 50), "Set Destination"))
-        {
-            SetDestination(dest.position);
-        }
+        playerController.enabled = true;
     }
 }

@@ -1,23 +1,20 @@
 using System;
 using UnityEngine;
 
-public class RoomNumber : MonoBehaviour , IInteractable
+public class RoomNumber : MonoBehaviour// , IInteractable
 {
-    [SerializeField] private int id;
+    [SerializeField] private string id;
     private void Awake()
     {
-        if (id == default)
-            int.TryParse(name, out id);
+        id ??= name;
     }
-
     private void Start()
     {
-        //todo KlasaDupa.Instance.AddRoom(this); i na tej podstawie sie on bedzie wiedzial z czego wybierac
+        Navigator.Instance.AddClass(id, transform.position);
     }
-
     public void Interact()
     {
         TimeTableFetcher.Instance.Hide();
-        TimeTableFetcher.Instance.DisplayTimeTable(id);
+        //TimeTableFetcher.Instance.DisplayTimeTable(id);
     }
 }

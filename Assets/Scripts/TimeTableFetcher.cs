@@ -14,9 +14,9 @@ public class TimeTableFetcher : MonoBehaviour
     private HtmlDocument htmlDoc;
     private TimeTableCreator tableCreator;
     private List<List<string>> table = new();
-    [SerializeField] private TMPro.TMP_Dropdown classesDropdown;
-    [SerializeField] private TMPro.TMP_Dropdown lessonDropdown;
-    
+    [SerializeField] private TMP_Dropdown classesDropdown;
+    [SerializeField] private TMP_Dropdown lessonDropdown;
+    public string SelectedLesson => lessonDropdown.options[lessonDropdown.value].text;
     private void Awake()
     {
         if (Instance == null)
@@ -35,15 +35,16 @@ public class TimeTableFetcher : MonoBehaviour
         var lessons = new List<string>();
         for (int i = 2; i < table.Count; i++)
         {
-            foreach (var VARIABLE in table[i])
+            for (int j = 1; j < table[i].Count; j++)
             {
-                lessons.Add(VARIABLE);
+                if (table[i][j].Contains("&")) continue;
+                lessons.Add(table[i][j]);
             }
         }
         lessons = lessons.Distinct().ToList();
         foreach (var VARIABLE in lessons)
         {
-            var option = new TMPro.TMP_Dropdown.OptionData(VARIABLE);
+            var option = new TMP_Dropdown.OptionData(VARIABLE);
             lessonDropdown.options.Add(option);
         }
     }
@@ -104,7 +105,7 @@ public class TimeTableFetcher : MonoBehaviour
     }
     private void AddClass(string name)
     {
-        var option = new TMPro.TMP_Dropdown.OptionData(name);
+        var option = new TMP_Dropdown.OptionData(name);
         classesDropdown.options.Add(option);
     }
     private async Task<string> RetriveHtml(string url)

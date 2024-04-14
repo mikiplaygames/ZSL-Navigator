@@ -9,11 +9,9 @@ public class TimeTableCollumn : MonoBehaviour
     
     public void SetRow(int horizontalIndex, string text)
     {
-        int index = text.IndexOf("&");
-        text = (index < 0)
-            ? text
-            : text.Remove(index, 6);
-
+        if (text.Contains("&"))
+            text = "";
+        
         if (horizontalIndex >= rows.Count)
             AddRow(text);
         else
@@ -27,7 +25,7 @@ public class TimeTableCollumn : MonoBehaviour
         int howMany = rows.Count - count;
         for (int i = 1; i <= howMany; i++)
         {
-            rows[rows.Count-i].transform.parent.gameObject.SetActive(false);
+            rows[^i].transform.parent.gameObject.SetActive(false);
         }
     }
     private void AddRow(string text)
