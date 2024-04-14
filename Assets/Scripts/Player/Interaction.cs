@@ -21,6 +21,7 @@ public class Interaction : MonoBehaviour
     }
     private void Interact()
     {
+        TimeTableFetcher.Instance.Hide();
         if (!Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 105, interactLayer)) return;
         var interactable = hit.transform.GetComponentInChildren<IInteractable>(true);
         if (interactable != null)

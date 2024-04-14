@@ -24,11 +24,10 @@ public class PauseMenu : MonoBehaviour
         speaker = new Speaker();
         speaker.Speak();
         sensitivitySlider.onValueChanged.AddListener(SetSensitivity);
-        if (GameSettings.Instance.Narrator)
-            narratorToggle.isOn = true;
     }
     private void OnEnable()
     {
+        narratorToggle.isOn = GameSettings.Instance.Narrator;
         control.Enable();
         control.UI.Pause.performed += Toggle;
     }

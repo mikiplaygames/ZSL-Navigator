@@ -79,9 +79,7 @@ public class PlayerController : MonoBehaviour
     private void Jump(InputAction.CallbackContext obj)
     {
         if (isGrounded)
-        {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-        }
     }
     private void RunStart(InputAction.CallbackContext obj)
     {
@@ -118,10 +116,8 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = Physics.CheckSphere(ground.position, distanceToGround, groundMask);
         if (isGrounded && Mathf.Abs(lastY) - Mathf.Abs(transform.position.y) > wobbleTreshold)
-        {
-            // impact
             impulse.GenerateImpulse();
-        }
+
         lastY = transform.position.y;
 
         if (isGrounded && velocity.y < 0)

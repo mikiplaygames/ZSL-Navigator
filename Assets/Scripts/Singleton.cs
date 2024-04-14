@@ -13,6 +13,7 @@ public abstract class Singleton<T> : MonoBehaviour where T : Component
             {
                 var s = new GameObject();
                 _instance = s.AddComponent<T>();
+                s.name = typeof(T).ToString();
             }
             return _instance;
         }

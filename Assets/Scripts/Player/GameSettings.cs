@@ -1,18 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
-using MikiHeadDev.Core.Input;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class GameSettings : Singleton<GameSettings>
 {
-    private bool narrator = false;
+    private bool narrator;
     public bool Narrator {
         set { 
             narrator = value;
             OnNarratorChanged?.Invoke();
         }
-        get { return narrator; }
+        get => narrator;
     }
     public UnityEvent OnNarratorChanged = new();
     public Vector2 MouseSensitivity;
