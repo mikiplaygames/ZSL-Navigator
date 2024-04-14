@@ -14,6 +14,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private Toggle narratorToggle;
     [SerializeField] private Slider sensitivitySlider;
     [SerializeField] private Button focusButton;
+    [SerializeField] private PlayerController playerController;
     private Control control;
     // private Speaker speaker;
     public static bool toggled = false;
@@ -41,6 +42,7 @@ public class PauseMenu : MonoBehaviour
         cameraInput.enabled = toggled;
         toggled = !toggled;
         panel.SetActive(toggled);
+        playerController.enabled = !toggled;
         if (toggled)
         {
             Cursor.lockState = CursorLockMode.None;

@@ -329,6 +329,7 @@ MonoBehaviour:
   narratorToggle: {fileID: 1254016370865059681}
   sensitivitySlider: {fileID: 2990758770745492419}
   focusButton: {fileID: 8908058623686610194}
+  playerController: {fileID: 2293392445499928834}
 --- !u!1 &1441758208036598437
 GameObject:
   m_ObjectHideFlags: 0
