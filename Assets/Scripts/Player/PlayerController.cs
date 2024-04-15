@@ -21,8 +21,6 @@ public class PlayerController : MonoBehaviour
     
     private Control control;
     private CharacterController characterController;
-    private CinemachineImpulseSource impulse;
-    private CinemachineBasicMultiChannelPerlin camNoise;
     
     private Vector3 velocity;
     private Vector2 move;
@@ -33,7 +31,6 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private float acceleration = 0f;
     private float moveNoise = 1f;
-    private float lastY;
 
     public float distanceToGround = 0.4f;
     public static PlayerController Instance { get; private set; }
@@ -48,9 +45,6 @@ public class PlayerController : MonoBehaviour
         control = new();
         characterController = GetComponent<CharacterController>();
         cam = GetComponentInChildren<Camera>();
-        impulse = GetComponent<CinemachineImpulseSource>();
-        camNoise = GetComponentInChildren<CinemachineVirtualCamera>().GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
-        lastY = 0;
     }
     private void OnEnable()
     {
@@ -100,26 +94,13 @@ public class PlayerController : MonoBehaviour
     {
         if (!moveInput.Equals(Vector3.zero)) move = moveInput;
         Vector3 movement = (move.y * new Vector3(cam.transform.forward.x, 0, cam.transform.forward.z).normalized) + (move.x * cam.transform.right);
-        if (!moveInput.Equals(Vector3.zero))
-        {
-            acceleration = Mathf.Clamp(acceleration + accelerationStep, 0, 1f);
-            camNoise.m_AmplitudeGain = Mathf.Lerp(camNoise.m_AmplitudeGain, moveNoise, 0.1f);
-        }
-        else
-        {
-            acceleration = Mathf.Lerp(acceleration, 0, deccelerationStep);
-            camNoise.m_AmplitudeGain = Mathf.Lerp(camNoise.m_AmplitudeGain, 0.1f, 0.1f);
-        }
+        acceleration = !moveInput.Equals(Vector3.zero) ? Mathf.Clamp(acceleration + accelerationStep, 0, 1f) : Mathf.Lerp(acceleration, 0, deccelerationStep);
         characterController.Move(movement * (speed * Time.deltaTime) * acceleration);
     }
     private void Gravity()
     {
         isGrounded = Physics.CheckSphere(ground.position, distanceToGround, groundMask);
-        if (isGrounded && Mathf.Abs(lastY) - Mathf.Abs(transform.position.y) > wobbleTreshold)
-            impulse.GenerateImpulse();
-
-        lastY = transform.position.y;
-
+        
         if (isGrounded && velocity.y < 0)
             velocity.y = -2f;
 

@@ -10,7 +10,6 @@ using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
-    [SerializeField] private CinemachineInputProvider cameraInput;
     [SerializeField] private GameObject panel;
     [SerializeField] private Toggle narratorToggle;
     [SerializeField] private Slider sensitivitySlider;
@@ -41,7 +40,6 @@ public class PauseMenu : MonoBehaviour
     }
     private void Toggle(InputAction.CallbackContext obj)
     {
-        cameraInput.enabled = toggled;
         toggled = !toggled;
         if (!PlayerGuide.Instance.isNavigating)
             playerController.enabled = !toggled;
