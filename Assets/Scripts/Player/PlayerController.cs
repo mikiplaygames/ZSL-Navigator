@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float deccelerationStep = 0.2f;
     [SerializeField] private Transform ground;
     [SerializeField] private Camera cam;
+    [SerializeField] private LayerMask playerLayer;
     
     private Control control;
     private CharacterController characterController;
@@ -70,16 +71,18 @@ public class PlayerController : MonoBehaviour
     }
     private void Jump(InputAction.CallbackContext obj)
     {
-        if (isGrounded)
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        if (!isGrounded) return;
+        velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
     }
     private void RunStart(InputAction.CallbackContext obj)
     {
         speed = runSpeed;
+        moveNoise = 2f;
     }
     private void RunStop(InputAction.CallbackContext obj)
     {
         speed = moveSpeed;
+        moveNoise = 1f;
     }
     private void FixedUpdate()
     {
@@ -88,13 +91,14 @@ public class PlayerController : MonoBehaviour
     }
     private void PlayerMovement()
     {
-        if (!moveInput.Equals(Vector2.zero)) move = moveInput;
+        if (!moveInput.Equals(Vector3.zero)) move = moveInput;
+        Vector3 movement = (move.y * new Vector3(cam.transform.forward.x, 0, cam.transform.forward.z).normalized) + (move.x * cam.transform.right);
         acceleration = !moveInput.Equals(Vector3.zero) ? Mathf.Clamp(acceleration + accelerationStep, 0, 1f) : Mathf.Lerp(acceleration, 0, deccelerationStep);
-        characterController.Move((move.y * new Vector3(cam.transform.forward.x, 0, cam.transform.forward.z).normalized) + cam.transform.right * (move.x * (speed * Time.deltaTime * acceleration)));
+        characterController.Move(movement * (speed * Time.deltaTime) * acceleration);
     }
     private void Gravity()
     {
-        isGrounded = Physics.CheckSphere(ground.position, distanceToGround);
+        isGrounded = Physics.CheckSphere(ground.position, distanceToGround, playerLayer);
         
         if (isGrounded && velocity.y < 0)
             velocity.y = -2f;

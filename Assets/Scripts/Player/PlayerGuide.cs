@@ -13,7 +13,7 @@ public class PlayerGuide : MonoBehaviour
     private PlayerController playerController;
     
     private Vector3 destination => Navigator.Instance.GetSelectedDestination(TimeTableFetcher.Instance.SelectedLesson.Split(" ")[^1]);
-    public bool isNavigating => !agent.isStopped;
+    public bool isNavigating => agent.enabled && !agent.isStopped;
     
     private void Awake()
     {
