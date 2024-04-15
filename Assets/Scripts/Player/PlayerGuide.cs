@@ -42,18 +42,31 @@ public class PlayerGuide : MonoBehaviour
         agent.enabled = true;
         agent.SetDestination(destination);
         agent.isStopped = false;
-        guidence ??= StartCoroutine(WaitForArrival());
+        if (guidence != null)
+            StopCoroutine(guidence);
+        guidence = StartCoroutine(WaitForArrival());
     }
     public void Navigate()
     {
+        if (agent.destination == destination || lineRenderer.positionCount > 0)
+        {
+            agent.isStopped = true;
+            agent.enabled = false;
+            playerController.enabled = true;
+            StopCoroutine(guidence);
+            lineRenderer.positionCount = 0;
+            return;
+        }
         if (destination == Vector3.zero) return;
         playerController.enabled = true;
         agent.enabled = true;
         agent.SetDestination(destination);
         agent.isStopped = true;
-        guidence ??= StartCoroutine(WaitForArrival(2));
+        if (guidence != null)
+            StopCoroutine(guidence);
+        guidence = StartCoroutine(WaitForArrival(3));
     }
-    private IEnumerator WaitForArrival(float distance = 1)
+    private IEnumerator WaitForArrival(float distance = 1.5f)
     {
         yield return null;
         while (Vector3.Distance(transform.position, agent.destination) > distance)//(agent.remainingDistance > distance)
