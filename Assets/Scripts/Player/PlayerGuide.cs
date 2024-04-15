@@ -67,13 +67,13 @@ public class PlayerGuide : MonoBehaviour
     private void Update()
     {
         if (agent.path.corners.Length < 2) return;
-        lineRenderer.positionCount = agent.path.corners.Length+1;
-        int i = 1;
-        lineRenderer.SetPosition(0, Vector3.Lerp(transform.position, agent.path.corners[0], 0.3f) + new Vector3(0, 3, 0));
+        lineRenderer.positionCount = agent.path.corners.Length;
+        int i = 0;
         foreach (var VARIABLE in agent.path.corners)
         {
             lineRenderer.SetPosition(i, VARIABLE + new Vector3(0,3,0));
             i++;
         }
+        lineRenderer.SetPosition(0, Vector3.Lerp(transform.position, agent.path.corners[0], 0.3f) + new Vector3(0, 3, 0));
     }
 }
