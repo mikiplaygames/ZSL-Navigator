@@ -18,6 +18,11 @@ public class MouseLook : MonoBehaviour
     }
     void LateUpdate()
     {
+        if (PlayerGuide.Instance.isNavigating)
+        {
+            transform.localRotation = Quaternion.identity;
+            return;
+        }
         if (PauseMenu.toggled) return;
         Look();
     }

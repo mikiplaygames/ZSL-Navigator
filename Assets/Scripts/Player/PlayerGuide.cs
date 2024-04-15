@@ -14,7 +14,8 @@ public class PlayerGuide : MonoBehaviour
     
     private Vector3 destination => Navigator.Instance.GetSelectedDestination(TimeTableFetcher.Instance.SelectedLesson.Split(" ")[^1]);
     public bool isNavigating => agent.enabled && !agent.isStopped;
-    
+
+    private Coroutine guidence;
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -24,20 +25,22 @@ public class PlayerGuide : MonoBehaviour
         if (Instance == null)
             Instance = this;
     }
-    private void DisplayLines()
-    {
-        var path = agent.path.corners;
-        lineRenderer.positionCount = path.Length;
-        lineRenderer.SetPositions(path);
-    }
     public void Guide()
     {
+        if (isNavigating)
+        {
+            agent.isStopped = true;
+            agent.enabled = false;
+            playerController.enabled = true;
+            StopCoroutine(guidence);
+            return;
+        }
         if (destination == Vector3.zero) return;
         playerController.enabled = false;
         agent.enabled = true;
         agent.SetDestination(destination);
         agent.isStopped = false;
-        StartCoroutine(WaitForArrival());
+        guidence ??= StartCoroutine(WaitForArrival());
     }
     public void Navigate()
     {
@@ -46,13 +49,12 @@ public class PlayerGuide : MonoBehaviour
         agent.enabled = true;
         agent.SetDestination(destination);
         agent.isStopped = true;
-        agent.enabled = false;
-        StartCoroutine(RefreshPath());
-        StartCoroutine(WaitForArrival(0.5f));
+        guidence ??= StartCoroutine(WaitForArrival(0.5f));
     }
     private IEnumerator WaitForArrival(float distance = 0.02f)
     {
-        while (agent.remainingDistance > distance)
+        yield return null;
+        while (Vector3.Distance(transform.position, agent.destination) > distance)//(agent.remainingDistance > distance)
         {
             yield return null;
         }
@@ -60,12 +62,16 @@ public class PlayerGuide : MonoBehaviour
         agent.isStopped = true;
         agent.enabled = false;
     }
-    private IEnumerator RefreshPath()
+    private void Update()
     {
-        while (!agent.isStopped && agent.hasPath)
+        if (agent.path.corners.Length < 2) return;
+        lineRenderer.positionCount = agent.path.corners.Length+1;
+        int i = 1;
+        lineRenderer.SetPosition(0, transform.position);
+        foreach (var VARIABLE in agent.path.corners)
         {
-            DisplayLines();
-            yield return null;
+            lineRenderer.SetPosition(i, VARIABLE);
+            i++;
         }
     }
 }
