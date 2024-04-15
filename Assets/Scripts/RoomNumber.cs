@@ -5,12 +5,13 @@ using UnityEngine;
 public class RoomNumber : MonoBehaviour// , IInteractable
 {
     [SerializeField] private string id;
-    [SerializeField] TextMeshPro textMeshPro;
+    private TextMeshPro textMeshPro;
     private void Awake()
     {
+        textMeshPro = GetComponent<TextMeshPro>();
         if (string.IsNullOrEmpty(id))
             id = name;
-//        textMeshPro.SetText(id);
+        textMeshPro.SetText(id);
     }
     private void Start()
     {
