@@ -16,8 +16,9 @@ public class MouseLook : MonoBehaviour
         control = new();
         Cursor.lockState = CursorLockMode.Locked;
     }
-    void Update()
+    void LateUpdate()
     {
+        if (PauseMenu.toggled) return;
         Look();
     }
     private void Look()

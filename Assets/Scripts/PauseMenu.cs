@@ -41,8 +41,7 @@ public class PauseMenu : MonoBehaviour
     private void Toggle(InputAction.CallbackContext obj)
     {
         toggled = !toggled;
-        if (!PlayerGuide.Instance.isNavigating)
-            playerController.enabled = !toggled;
+        
         panel.SetActive(toggled);
         if (toggled)
         {
@@ -52,9 +51,7 @@ public class PauseMenu : MonoBehaviour
             focusButton.Select();
         }
         else
-        {
             Cursor.lockState = CursorLockMode.Locked;
-        }
     }
     public void ExitToMainMenu()
     {

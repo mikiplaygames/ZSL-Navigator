@@ -34,6 +34,7 @@ public class PlayerGuide : MonoBehaviour
     {
         if (destination == Vector3.zero) return;
         playerController.enabled = false;
+        agent.enabled = true;
         agent.SetDestination(destination);
         agent.isStopped = false;
         StartCoroutine(WaitForArrival());
@@ -42,8 +43,10 @@ public class PlayerGuide : MonoBehaviour
     {
         if (destination == Vector3.zero) return;
         playerController.enabled = true;
+        agent.enabled = true;
         agent.SetDestination(destination);
         agent.isStopped = true;
+        agent.enabled = false;
         StartCoroutine(RefreshPath());
         StartCoroutine(WaitForArrival(0.5f));
     }
@@ -55,6 +58,7 @@ public class PlayerGuide : MonoBehaviour
         }
         playerController.enabled = true;
         agent.isStopped = true;
+        agent.enabled = false;
     }
     private IEnumerator RefreshPath()
     {
