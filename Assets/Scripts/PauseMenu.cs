@@ -46,8 +46,8 @@ public class PauseMenu : MonoBehaviour
         if (toggled)
         {
             Cursor.lockState = CursorLockMode.None;
-            panel.transform.position = new Vector3(0, panel.transform.position.y, 0);
-            LeanTween.moveX(panel, 113f, 0.5f).setEase(LeanTweenType.easeOutElastic);
+            panel.transform.position = new Vector3(-50, panel.transform.position.y, 0);
+            LeanTween.moveX(panel, 0f, 0.5f).setEase(LeanTweenType.easeOutElastic);
             focusButton.Select();
         }
         else
