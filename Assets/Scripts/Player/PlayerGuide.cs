@@ -13,7 +13,7 @@ public class PlayerGuide : MonoBehaviour
 
     private NavMeshAgent agent;
     private PlayerController playerController;
-    
+    private Vector3 goldenTrail = new Vector3(0, 2, 0);
     private Vector3 destination => Navigator.Instance.GetSelectedDestination(TimeTableFetcher.Instance.SelectedLesson.Split(" ")[^1]);
     public bool isNavigating => agent.enabled && !agent.isStopped;
 
@@ -60,7 +60,7 @@ public class PlayerGuide : MonoBehaviour
         if (destination == Vector3.zero) return;
         playerController.enabled = true;
         agent.enabled = true;
-        agent.SetDestination(destination);
+        agent.SetDestination(destination);  
         agent.isStopped = true;
         if (guidence != null)
             StopCoroutine(guidence);
@@ -88,9 +88,9 @@ public class PlayerGuide : MonoBehaviour
         int i = 0;
         foreach (var VARIABLE in agent.path.corners)
         {
-            lineRenderer.SetPosition(i, VARIABLE + new Vector3(0,3,0));
+            lineRenderer.SetPosition(i, VARIABLE + goldenTrail);
             i++;
         }
-        lineRenderer.SetPosition(0, Vector3.Lerp(transform.position, agent.path.corners[0], 0.3f) + new Vector3(0, 3, 0));
+        lineRenderer.SetPosition(0, Vector3.Lerp(transform.position, agent.path.corners[0], 0.3f) + goldenTrail);
     }
 }
