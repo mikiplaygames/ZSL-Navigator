@@ -12,7 +12,7 @@ public class PlayerGuide : MonoBehaviour
     private NavMeshAgent agent;
     private PlayerController playerController;
     
-    private Vector3 destination => Navigator.Instance.GetSelectedDestination(TimeTableFetcher.Instance.SelectedLesson);
+    private Vector3 destination => Navigator.Instance.GetSelectedDestination(TimeTableFetcher.Instance.SelectedLesson.Split(" ")[^1]);
     public bool isNavigating => !agent.isStopped;
     
     private void Awake()
