@@ -41,6 +41,7 @@ public class PauseMenu : MonoBehaviour
     private void Toggle(InputAction.CallbackContext obj)
     {
         toggled = !toggled;
+        Cursor.visible = toggled;
         
         panel.SetActive(toggled);
         if (toggled)
