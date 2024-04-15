@@ -12,13 +12,13 @@ public class GameSettings : Singleton<GameSettings>
         get => narrator;
     }
     public UnityEvent OnNarratorChanged = new();
-
-    public float _mouseSensitivity;
+    private float _mouseSensitivity = 25f;
     public float mouseSensitivity
     {
         set
         {
             _mouseSensitivity = value;
+            Debug.Log(mouseSensitivity);
             OnMouseSensitivityChanged?.Invoke();
         }
         get => _mouseSensitivity;
@@ -26,7 +26,7 @@ public class GameSettings : Singleton<GameSettings>
     public UnityEvent OnMouseSensitivityChanged = new();
     private void OnEnable()
     {
-        mouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivityX", 0.55f);
+        mouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivityX", 25f);
         OnMouseSensitivityChanged?.Invoke();
     }
     private void OnDisable()
