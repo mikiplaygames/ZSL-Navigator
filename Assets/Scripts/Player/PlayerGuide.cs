@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.AI;
+using Vector3 = UnityEngine.Vector3;
 
 public class PlayerGuide : MonoBehaviour
 {
@@ -67,10 +69,10 @@ public class PlayerGuide : MonoBehaviour
         if (agent.path.corners.Length < 2) return;
         lineRenderer.positionCount = agent.path.corners.Length+1;
         int i = 1;
-        lineRenderer.SetPosition(0, transform.position);
+        lineRenderer.SetPosition(0, Vector3.Lerp(transform.position, agent.path.corners[0], 0.3f) + new Vector3(0, 3, 0));
         foreach (var VARIABLE in agent.path.corners)
         {
-            lineRenderer.SetPosition(i, VARIABLE);
+            lineRenderer.SetPosition(i, VARIABLE + new Vector3(0,3,0));
             i++;
         }
     }

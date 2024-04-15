@@ -10,8 +10,7 @@ public class RoomNumber : MonoBehaviour// , IInteractable
     {
         if (string.IsNullOrEmpty(id))
             id = name;
-        textMeshPro.SetText(id);
-        Debug.Log(id);
+//        textMeshPro.SetText(id);
     }
     private void Start()
     {

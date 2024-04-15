@@ -18,7 +18,6 @@ public class GameSettings : Singleton<GameSettings>
         set
         {
             _mouseSensitivity = value;
-            Debug.Log(mouseSensitivity);
             OnMouseSensitivityChanged?.Invoke();
         }
         get => _mouseSensitivity;
