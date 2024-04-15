@@ -51,9 +51,9 @@ public class PlayerGuide : MonoBehaviour
         agent.enabled = true;
         agent.SetDestination(destination);
         agent.isStopped = true;
-        guidence ??= StartCoroutine(WaitForArrival(0.5f));
+        guidence ??= StartCoroutine(WaitForArrival(2));
     }
-    private IEnumerator WaitForArrival(float distance = 0.02f)
+    private IEnumerator WaitForArrival(float distance = 1)
     {
         yield return null;
         while (Vector3.Distance(transform.position, agent.destination) > distance)//(agent.remainingDistance > distance)
@@ -66,7 +66,11 @@ public class PlayerGuide : MonoBehaviour
     }
     private void Update()
     {
-        if (agent.path.corners.Length < 2) return;
+        if (agent.path.corners.Length < 2 || !agent.isStopped)
+        {
+            lineRenderer.positionCount = 0;
+            return;
+        }
         lineRenderer.positionCount = agent.path.corners.Length;
         int i = 0;
         foreach (var VARIABLE in agent.path.corners)
