@@ -19,6 +19,8 @@ public class PlayerGuide : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         playerController = GetComponent<PlayerController>();
+        agent.isStopped = true;
+        agent.enabled = false;
         if (Instance == null)
             Instance = this;
     }

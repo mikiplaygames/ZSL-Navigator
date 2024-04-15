@@ -12,11 +12,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float moveSpeed = 6f;
     [SerializeField] private float runSpeed = 9f;
     [SerializeField] private float jumpHeight = 2.4f;
-    [SerializeField] private int wobbleTreshold = 10;
     [SerializeField] private float accelerationStep = 0.05f;
     [SerializeField] private float deccelerationStep = 0.2f;
     [SerializeField] private Transform ground;
-    [SerializeField] private LayerMask groundMask;
     [SerializeField] private Camera cam;
     
     private Control control;
@@ -78,12 +76,10 @@ public class PlayerController : MonoBehaviour
     private void RunStart(InputAction.CallbackContext obj)
     {
         speed = runSpeed;
-        moveNoise = 2f;
     }
     private void RunStop(InputAction.CallbackContext obj)
     {
         speed = moveSpeed;
-        moveNoise = 1f;
     }
     private void FixedUpdate()
     {
@@ -92,14 +88,13 @@ public class PlayerController : MonoBehaviour
     }
     private void PlayerMovement()
     {
-        if (!moveInput.Equals(Vector3.zero)) move = moveInput;
-        Vector3 movement = (move.y * new Vector3(cam.transform.forward.x, 0, cam.transform.forward.z).normalized) + (move.x * cam.transform.right);
+        if (!moveInput.Equals(Vector2.zero)) move = moveInput;
         acceleration = !moveInput.Equals(Vector3.zero) ? Mathf.Clamp(acceleration + accelerationStep, 0, 1f) : Mathf.Lerp(acceleration, 0, deccelerationStep);
-        characterController.Move(movement * (speed * Time.deltaTime) * acceleration);
+        characterController.Move((move.y * new Vector3(cam.transform.forward.x, 0, cam.transform.forward.z).normalized) + cam.transform.right * (move.x * (speed * Time.deltaTime * acceleration)));
     }
     private void Gravity()
     {
-        isGrounded = Physics.CheckSphere(ground.position, distanceToGround, groundMask);
+        isGrounded = Physics.CheckSphere(ground.position, distanceToGround);
         
         if (isGrounded && velocity.y < 0)
             velocity.y = -2f;
